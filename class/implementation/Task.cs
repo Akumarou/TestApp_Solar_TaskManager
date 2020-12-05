@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TestApp
+namespace TestApp_Solar_TaskManager
 {
-    class Task
+    class Task : ITask
     {
         private DateTime date;
         public DateTime Date   // property
@@ -49,7 +49,7 @@ namespace TestApp
 
         public override string ToString()
         {
-            return the_task + " {" + date.ToString().Substring(0, 10) + "}";
+            return "{" + date.ToString().Substring(0, 10) + "}: "+the_task;
         }
     }
 }
