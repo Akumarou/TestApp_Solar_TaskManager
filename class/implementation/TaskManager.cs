@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TestApp
+namespace TestApp_Solar_TaskManager
 {
     class TaskManager : ITaskManager
     {
@@ -100,19 +100,17 @@ namespace TestApp
         {
             List<Task> temp = getTasksByTask(old_task);
             if (temp.Count >= task.Count && temp.Count >= time.Count)
+            {
                 for (int i = 0; i < task.Count; i++)
                 {
                     temp[i].The_task = task[i];
                 }
 
-            for (int i = 0; i < time.Count; i++)
-            {
-                temp[i].Date = time[i];
+                for (int i = 0; i < time.Count; i++)
+                {
+                    temp[i].Date = time[i];
+                }
             }
-
-
-
-
             return true;
         }
         public bool editByTask(string old_task, List<string> task)
@@ -140,14 +138,16 @@ namespace TestApp
         {
             List<Task> temp = getTasksByDate(old_time);
             if (temp.Count >= task.Count && temp.Count >= time.Count)
+            {
                 for (int i = 0; i < task.Count; i++)
                 {
                     temp[i].The_task = task[i];
                 }
 
-            for (int i = 0; i < time.Count; i++)
-            {
-                temp[i].Date = time[i];
+                for (int i = 0; i < time.Count; i++)
+                {
+                    temp[i].Date = time[i];
+                }
             }
             return true;
         }
@@ -184,8 +184,9 @@ namespace TestApp
         {
             StringBuilder result = new StringBuilder();
             if (tasks != null)
-                tasks.ForEach(e => result.Append(e.ToString() + "\n"));
-            return result.ToString();
+                for (int i = 0; i < tasks.Count; i++)
+                    result.Append(i + ") " + tasks[i].ToString() + "\n");
+            return result.ToString().Equals("") ? "Список задач пуст" : result.ToString();
         }
     }
 }

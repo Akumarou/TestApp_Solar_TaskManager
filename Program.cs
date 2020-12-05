@@ -2,76 +2,89 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace TestApp
+namespace TestApp_Solar_TaskManager
 {
     class Program
     {
         static void Main()
         {
-            ITaskManager taskManager = new TaskManager();
-            Console.WriteLine("Initialize by empty constructor\nTask List:\n" +
-                taskManager.ToString());
+            IUI UI = new ConsoleUI(new TaskManager());
+            UI.print("Инициализация пустого конструктора");
+            UI.printTasks();
 
-            taskManager.addNewTask("fuck", DateTime.Parse("2020/02/15"));
-            Console.WriteLine("Adding singular value\nTask List:\n" +
-                taskManager.ToString());
+            UI.addNewTask("Задача 1", DateTime.Parse("2020/02/15"));
+            UI.print("Добавление задачи");
+            UI.printTasks();
 
-            taskManager.addNewTasks(new List<Task> {
-                new Task(DateTime.Parse("2020/02/14"), "fuck1"),
-                new Task(DateTime.Parse("2020/02/13"), "fuck2"),
-                new Task(DateTime.Parse("2020/02/12"), "fuck2"),
-                new Task(DateTime.Parse("2020/02/15"), "fuck4")
-                });
-            Console.WriteLine("Adding pluar value \nTask List:\n" + 
-                taskManager.ToString());
+            UI.addNewTasks(new List<Task> {
+                            new Task(DateTime.Parse("2020/02/14"), "Задача 2"),
+                            new Task(DateTime.Parse("2020/02/13"), "Задача 3"),
+                            new Task(DateTime.Parse("2020/02/12"), "Задача 4"),
+                            new Task(DateTime.Parse("2020/02/15"), "Задача 4")
+                            });
+            UI.print("Добавление набора задач");
+            UI.printTasks();
 
-            taskManager.deleteTaskbyId(0);
-            Console.WriteLine("Deleting by id \nTask List:\n" +
-                taskManager.ToString());
-            taskManager.deleteTasksbyTask("fuck2");
-            Console.WriteLine("Deleting by task \nTask List:\n" +
-                taskManager.ToString());
-            taskManager.deleteTasksByDate(DateTime.Parse("2020/02/15"));
-            Console.WriteLine("Deleting by date \nTask List:\n" +
-                taskManager.ToString());
+            UI.deleteTaskbyId(0);
+            UI.print("Уделние по id");
+            UI.printTasks();
+            UI.deleteTasksbyTask("Задача 3");
+            UI.print("Уделние по тексту задачи");
+            UI.printTasks();
+            UI.deleteTasksByDate(DateTime.Parse("2020/02/15"));
+            UI.print("Уделние по дате");
+            UI.printTasks();
 
-            taskManager = new TaskManager(new List<Task> {
-                new Task(DateTime.Parse("2020/02/15"), "fuck"),
-                new Task(DateTime.Parse("2020/02/14"), "fuck1"),
-                new Task(DateTime.Parse("2020/02/13"), "fuck2"),
-                new Task(DateTime.Parse("2020/02/12"), "fuck2"),
-                new Task(DateTime.Parse("2020/02/18"), "fuck2"),
-                new Task(DateTime.Parse("2020/02/15"), "fuck4")
-                });
-            Console.WriteLine("Initialize by NOT empty constructor\nTask List:\n" + 
-                taskManager.ToString());
+            UI.setNewTaskManager(new TaskManager(new List<Task> {
+                            new Task(DateTime.Parse("2020/02/11"), "Задача 1"),
+                            new Task(DateTime.Parse("2020/02/14"), "Задача 2"),
+                            new Task(DateTime.Parse("2020/02/14"), "Задача 3"),
+                            new Task(DateTime.Parse("2020/02/13"), "Задача 3"),
+                            new Task(DateTime.Parse("2020/02/17"), "Задача 3"),
+                            new Task(DateTime.Parse("2020/02/20"), "Задача 4"),
+                            new Task(DateTime.Parse("2020/02/15"), "Задача 5"),
+                            new Task(DateTime.Parse("2020/02/21"), "Задача 6"),
+                            new Task(DateTime.Parse("2020/02/21"), "Задача 7")
+                            }));
 
-            taskManager.editById(0,"fuck000");
-            Console.WriteLine("Edit by id\nTask List:\n" +
-                taskManager.ToString());
+            UI.print("Инициализация конструктора с набором задач");
+            UI.printTasks();
 
-            taskManager.editByTask("fuck1", new List<string> { "fuck111" });
-            Console.WriteLine("Edit by singular task\nTask List:\n" +
-                taskManager.ToString());
+            UI.editById(0, "Задача с id");
+            UI.print("Редактирование по id");
+            UI.printTasks();
 
-            taskManager.editByTask("fuck2", new List<string> { "fuck222" });
-            Console.WriteLine("Edit by plural task\nTask List:\n" +
-                taskManager.ToString()); 
-            taskManager.editByTask("fuck2", new List<string> { "fuck222","fuck222" ,"fuck222" });
-            Console.WriteLine("Edit by plural tasks\nTask List:\n" +
-                taskManager.ToString());
+            UI.editByTask("Задача 2", new List<string> { "Задача с текстом - 1 вхождение" });
+            UI.print("Редактирование по тексту задачи (1 вхождение, 1 изменение)");
+            UI.printTasks();
 
-            taskManager.editByDate(DateTime.Parse("2020/02/14"), new List<string> { "date" });
-            Console.WriteLine("Edit by singular date\nTask List:\n" +
-                taskManager.ToString());
+            UI.editByTask("Задача 3", new List<string> { "Задача с текстом - несколько вхождений, 1 изменение" });
+            UI.print("Редактирование по тексту задачи (несколько вхождений, 1 изменение)");
+            UI.printTasks();
 
-            taskManager.editByDate(DateTime.Parse("2020/02/15"), new List<string> { "date111" });
-            Console.WriteLine("Edit by plural date\nTask List:\n" +
-                taskManager.ToString());
+            UI.editByTask("Задача 3", new List<string> { "Задача с текстом - несколько вхождений, несколько изменений",
+                                                         "Задача с текстом - несколько вхождений, несколько изменений"});
+            UI.print("Редактирование по тексту задачи (несколько вхождений, несколько изменений)");
+            UI.printTasks();
 
-            taskManager.clearTaskManager();
-            Console.WriteLine("Removing all data\nTask List:\n" +
-                taskManager.ToString());
+            UI.editByDate(DateTime.Parse("2020/02/20"), new List<string> { "Задача с датой - 1 вхождение, 1 изменение" });
+            UI.print("Редактирование по дате (1 вхождение, 1 изменение)");
+            UI.printTasks();
+
+            UI.editByDate(DateTime.Parse("2020/02/15"), new List<string> { "Задача с датой - несколько вхождений, 1 изменение" });
+            UI.print("Редактирование по дате (несколько вхождений, 1 изменение)");
+            UI.printTasks();
+
+            UI.editByDate(DateTime.Parse("2020/02/21"), new List<string> { "Задача с датой - несколько вхождений, несколько изменений",
+                                                                           "Задача с датой - несколько вхождений, несколько изменений" });
+            UI.print("Редактирование по дате (несколько вхождений, несколько изменений)");
+            UI.printTasks();
+
+            UI.clearTaskManager();
+            UI.print("Очистка списка задач");
+            UI.printTasks();
+
+            Console.ReadKey();
         }
     }
 }
